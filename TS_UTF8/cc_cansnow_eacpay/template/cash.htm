@@ -1,0 +1,166 @@
+<!--{if $_G['inajax']}-->
+{template common/header}
+<!--{/if}-->
+<script src="source/plugin/cc_cansnow_eacpay/jquery.min.js" type="text/javascript"></script>
+<div id="main_messaqge">
+    <!--{if $csetting['allow_cash']}-->
+    <h3 class="flb">
+        <em>$csetting['pluginname']</em>
+        <span>
+            <!--{if $_G['inajax']}--><a href="javascript:;" class="flbc" onclick="hideWindow('{$_GET['handlekey']}')" title="{lang close}">{lang close}</a><!--{/if}-->
+        </span>
+    </h3>
+
+    <ul class="creditl mtm bbda cl">
+    </ul>
+    <style>
+        .flex_row {
+            display: flex;
+            flex-direction: row;
+            margin: 10px 0;
+        }
+        
+        .flex_row b {
+            width: 80px;
+        }
+        
+        .flex_col {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .flex_1 {
+            flex: 1;
+        }
+        
+        .eacpay_remark {
+            padding: 0 0 0 40px;
+            width: 200px;
+        }
+        
+        .eacpay_remark p {}
+    </style>
+    <form action="plugin.php?id=cc_cansnow_eacpay:cash&action=cash" method="post" name="add" id="add" enctype="multipart/form-data">
+        <div style="padding:10px;">
+            <div class="flex_row">
+                <div class="flex_col flex_1">
+                    <div class="flex_row">
+                        <b>提現地址：</b>
+                        <input type="text" name="cash_address" id="cash_address" value="{$cash_address}" size="64" min-length="30" class="px" />
+                    </div>
+                    <div class="flex_row">
+                        <b></b>
+                        <span>收款地址必填,否則無法提現,請務必填寫正確 ,區塊鏈支付後不可逆,不承擔由此造成的損失,EACPAY錢包接收生成地址</span> </div>
+
+                    <div class="flex_row">
+                        <b>提現金額：</b>
+                        <input type="number" name="money" id="cashamount" value="1" onchange="exchangecalcredit()" size="5" min="1" max="{$usermoney['extcredits'.$csetting['moneytype']]}" class="px" /> {$_G['setting']['extcredits'][$csetting['moneytype']]['title']}
+                        <button type="button" onclick="document.getElementById('cashamount').value={$usermoney['extcredits'.$csetting['moneytype']]};exchangecalcredit();">全部</button>
+                        <span>最大{$usermoney['extcredits'.$csetting['moneytype']]}{$_G['setting']['extcredits'][$csetting['moneytype']]['title']}</span>
+                    </div>
+                    <div class="flex_row">
+                        <b style="width:80px;">EAC即時價:</b>
+                        <label id="eacas">{$exchangeData}{$bizhong}</label>
+                    </div>
+                    <div class="flex_row">
+                        <b style="width:80px;">預計到賬:</b>
+                        <label id="eacamount">0 EAC</label>
+                    </div>
+                    <div class="flex_row" style="display: none;">
+                        <b style="width:80px;">提現備註:</b>
+                        <input type="text" name="remark" id="remark" value="0" readonly="readonly" disabled="on" size="30" class="px" style="border: 0;background: transparent;" />
+                    </div>
+                    <input type="hidden" name="formhash" value="{FORMHASH}" />
+                    <!--{if !empty($_G['inajax'])}--><input type="hidden" name="handlekey" value="$_GET['handlekey']" />
+                    <!--{/if}-->
+                    <p class="o pns{if empty($_G['inajax'])} mtw{/if}">
+                        <button type="submit" class="pn vm" name="addsubmit" value="yes"><strong>申請提現</strong></button>
+                    </p>
+                </div>
+                <div class="flex_col eacpay_remark">
+                    <p>人民幣現金 1元 = {$csetting['moneybl']}{$_G['setting']['extcredits'][$csetting['moneytype']]['title']}</p>
+                    <p>單次最低充值 $csetting['moneymin']RMB</p>
+                    <p>單次最高充值 1000RMB</p>
+                    <p>最近30天最高充值 10000RMB</p>
+                    <p>EACPAY手機端區塊鏈錢包下載:</p>
+                    <p>1、google play</p>
+                    <p>2、eacpay.com官網下載</p>
+                    <p>3、手機瀏覽器掃一掃，下載EACPAY</p>
+                    <img src="source/plugin/cc_cansnow_eacpay/app.png" width="130" />
+                </div>
+            </div>
+        </div>
+    </form>
+    <ul class="creditl mtm bbda cl">
+    </ul>
+    <script type="text/javascript">
+        jQuery.noConflict();
+
+        var exchangeData = parseFloat('{$exchangeData}');
+        var moneybl = parseInt("{$csetting['moneybl']}");
+
+
+        document.getElementById('remark').value = "withdraw_{$_G['uid']}" + (new Date().getTime()) + Math.floor(Math.random() * 100000 + 1);
+        String.prototype.toInt = function() {
+            var s = parseInt(this);
+            return isNaN(s) ? 0 : s;
+        }
+
+        function exchangecalcredit() {
+            cashamount = jQuery('#cashamount');
+            cashamount.val(cashamount.val().toInt());
+            if (cashamount.val() != 0) {
+
+                var eac =  cashamount.val() / moneybl / exchangeData;
+                eac = eac.toFixed(3);
+                jQuery('#eacamount').text(eac + ' EAC');
+            } else {
+                cashamount.val('0');
+            }
+        }
+
+        exchangecalcredit();
+    </script>
+
+    <div>
+        <table summary="提現" cellspacing="0" cellpadding="0" class="dt mtm">
+            <caption>
+                <h2 class="mbm xs2">提現記錄
+                    <!-- <a href="plugin.php?id=cc_cansnow_eacpay:recharge&action=log" class="xi2 xs1 xw0 y">查看更多»</a> -->
+                </h2>
+            </caption>
+            <tbody>
+                <tr class="header">
+                    <th>訂單號</th>
+                    <th>創建時間</th>
+                    <th>金額</th>
+                    <th>狀態</th>
+                </tr>
+                <!--{loop $orderlist $key $value}-->
+                <tr>
+                    <td>
+                        <!--{$value['order_id']}-->
+                    </td>
+                    <td>
+                        <!--{date($value['create_time'],'Y-m-d H:i:s')}-->
+                    </td>
+                    <td>
+                        <!--{$value['amount']}-->{$_G['setting']['extcredits'][$csetting['moneytype']]['title']}
+                    </td>
+                    <td>
+                        <!--{$statusArr[$value['status']]}-->
+                    </td>
+                </tr>
+                <!--{/loop}-->
+            </tbody>
+        </table>
+    </div>
+    <!--{/if}-->
+    <!--{if !$csetting['allow_cash']}-->
+    <div style="border: 1px dashed #CDCDCD;padding: 20px;color:#f00;">系統沒有開啟提現功能</div>
+    <!--{/if}-->
+
+</div>
+<!--{if $_G['inajax']}-->
+{template common/footer}
+<!--{/if}-->

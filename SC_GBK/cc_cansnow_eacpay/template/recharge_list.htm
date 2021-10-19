@@ -1,0 +1,160 @@
+<link rel="stylesheet" href="https://unpkg.com/layui@2.6.8/dist/css/layui.css">
+<style>
+    .layui-form-label {
+        width: 50px;
+        padding: 9px 5px 9px 0;
+    }
+</style>
+<div class="layui-panel" style="margin: 10px 0;padding: 10px 0 0 0;">
+    <form action="{$_SERVER['REQUEST_URI']}" class="layui-form" method="POST">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">用户ID</label>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <input type="text" name="uid" autocomplete="off" class="layui-input" value="{$_REQUEST['uid']}" />
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <input type="text" name="username" autocomplete="off" class="layui-input" value="{$_REQUEST['username']}" />
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">订单号</label>
+                <div class="layui-input-inline" style="width: 200px;">
+                    <input type="text" name="order_id" autocomplete="off" class="layui-input" value="{$_REQUEST['order_id']}" />
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">状态</label>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <select name="status">
+                        <option value="" <!--{if $_REQUEST['status']==''}-->selected<!--{/if}-->>全部状态</option>
+                        <option value="wait" <!--{if $_REQUEST['status']=='wait'}-->selected<!--{/if}-->>待支付</option>
+                        <option value="payed" <!--{if $_REQUEST['status']=='payed'}-->selected<!--{/if}-->>已支付</option>
+                        <option value="complete" <!--{if $_REQUEST['status']=='complete'}-->selected<!--{/if}-->>已完成</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <div class="layui-input-inline" style="width: 100px;">
+                    <button class="layui-btn" lay-submit lay-filter="formDemo">查询</button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+<table class="tb tb2 ">
+    <thead>
+        <tr>
+            <th colspan="15" class="partition">信息列表</th>
+        </tr>
+        <tr class="header">
+            <th>订单号</th>
+            <th>创建时间</th>
+            <th>用户名</th>
+            <th>充值金额</th>
+            <th>等价EAC</th>
+            <th>实际到账</th>
+            <th>状态</th>
+        </tr>
+    </thead>
+    <tbody id="list_body">
+        <!--{loop $datalist $key $value}-->
+        <tr>
+            <td>
+                <!--{$value['order_id']}-->
+            </td>
+            <td>
+                <!--{date($value['create_time'],'Y-m-d H:i:s')}-->
+            </td>
+            <td>
+                <!--{$value['username']}-->
+            </td>
+            <td>
+                <!--{$value['amount']}-->
+            </td>
+            <td>
+                <!--{$value['eac']}-->
+            </td>
+            <td>
+                <!--{$value['real_eac']}-->
+            </td>
+            <td>
+                <!--{if $value['status'] == 'payed' }-->
+                <a href="javascript:;" class="statusSelect<!--{$value['status']}-->" data-status="<!--{$value['status']}-->" data-orderid="<!--{$value['order_id']}-->">
+                    需要手动处理
+                </a>
+                <!--{elseif $value['status'] == 'wait' }-->
+                等待支付
+                <!--{else}-->
+                成功
+                <!--{/if}-->
+            </td>
+        </tr>
+        <!--{/loop}-->
+    </tbody>
+</table>
+<div id="pagenation"></div>
+<script id="optinTpl" type="text/html">
+    <label><input type="radio" name="statusSelect" value="wait" {{#  if(d.status == 'wait'){ }}checked{{#  } }}>等待支付</label>
+    <label><input type="radio" name="statusSelect" value="complete" {{#  if(d.status == 'complete'){ }}checked{{#  } }} >支付完成</label>
+</script>
+<script src="https://unpkg.com/layui@2.6.8/dist/layui.js"></script>
+<script>
+    var $ = layui.jquery;
+    $('.statusSelectpayed').on('click', function() {
+        var that = $(this);
+        var s = $(this).data('status');
+        var order_id = $(this).data('orderid');
+        layui.layer.open({
+            title: '改变订单状态',
+            content: layui.laytpl($('#optinTpl').html()).render({
+                status: s
+            }),
+            yes: function(index, layero) {
+                var checked = layero.find('input[name=statusSelect]:checked').val();
+                $.post('{$_SERVER["REQUEST_URI"]}', {
+                        action: 'changestatus',
+                        status: checked,
+                        order_id: order_id,
+                    },
+                    function(d) {
+                        if (d == 'ok') {
+                            that.data('status', checked);
+                            layui.layer.msg("操作成功", {
+                                icon: 1,
+                                time: 2000
+                            },function(){
+                                window.location.reload();
+                            });
+                        } else {
+
+                        }
+                    });
+            }
+        });
+    });
+    layui.laypage.render({
+        elem: 'pagenation',
+        count: '{$totalCount}',
+        limit: '{$pagesize}',
+        curr: '{$page}',
+        jump: function(obj, first) {
+            //obj包含了当前分页的所有参数，比如：
+            console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+            console.log(obj.limit); //得到每页显示的条数
+
+            //首次不执行
+            if (!first) {
+                var url = window.location.href;
+                url = url.replace(/&page=\d+/, '');
+                url += "&page=" + obj.curr;
+                window.location.href = url;
+            }
+        }
+    });
+</script>

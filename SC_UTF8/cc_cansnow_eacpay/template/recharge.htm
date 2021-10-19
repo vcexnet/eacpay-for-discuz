@@ -1,0 +1,317 @@
+<!--{if $_G['inajax']}-->
+{template common/header}
+<!--{/if}-->
+<script src="source/plugin/cc_cansnow_eacpay/jquery.min.js" type="text/javascript"></script>
+<div id="main_messaqge">
+    <h3 class="flb">
+        <em>$csetting['pluginname']</em>
+        <span>
+					<!--{if $_G['inajax']}--><a href="javascript:;" class="flbc" onclick="hideWindow('{$_GET['handlekey']}')" title="{lang close}">{lang close}</a><!--{/if}-->
+				</span>
+    </h3>
+    <table width="100%">
+        <tr>
+            <td style="padding-top:0;">
+                <p class="tbms mtm ">$csetting['notice']</p>
+            </td>
+        </tr>
+    </table>
+    <style>
+        .flex_row {
+            display: flex;
+            flex-direction: row;
+            margin: 10px 0;
+        }
+        
+        .flex_row>b {
+            width: 80px;
+        }
+        
+        .flex_col {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .flex_1 {
+            flex: 1;
+        }
+        
+        .eacdetaildata {
+            display: none;
+        }
+        
+        #qrcode>div {
+            border: 3px dotted #666;
+            border-radius: 5px;
+            width: 157px;
+            text-align: center;
+        }
+        
+        #qrcode>div>div {
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+        
+        .eacpay_payment {
+            border: 1px solid #ddd;
+            display: inline-block;
+            padding: 5px;
+            vertical-align: baseline;
+        }
+        
+        .eacpay_payment img {
+            vertical-align: top;
+        }
+        
+        .eacpay_payment span {
+            padding: 0 5px;
+            display: inline-block;
+            height: 48px;
+            line-height: 24px;
+            font-weight: 700;
+        }
+        
+        .eacpay_remark {
+            padding: 0 0 0 40px;
+        }
+        
+        .eacpay_remark p {}
+        #loading{
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            margin: -100px -250px;
+            background: #fff;
+            width: 500px;
+            text-align: center;
+            height: 200px;
+            box-shadow: #87858570 0px 0px 0px 8px;
+        }
+
+        @keyframes circle-dash{
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        #loading .circle{
+            animation: circle-dash 2s linear infinite;margin: 20px;
+        }
+        #loading .progresstext{    line-height: 50px;    font-size: 16px;}
+    </style>
+    <form action="plugin.php?id=cc_cansnow_eacpay:recharge&action=buy" method="post" name="add" id="add" enctype="multipart/form-data">
+        <div style="padding:10px;">
+            <div class="flex_row">
+                <div class="flex_col flex_1">
+                    <div class="flex_row" style="align-items: center;">
+                        <b>支付方式:</b>
+                        <label class="flex_row" style="align-items: center;">
+                            <input type="radio" name="paytype" value="eacpay" checked/>
+                            <span class="eacpay_payment">
+                                <img src="source/plugin/cc_cansnow_eacpay/logo.png" alt="EACPAY区块链支付" width="48"/>
+                                <span>EACPAY<br/>区块链支付</span>
+                            </span>
+                        </label>
+                    </div>
+                    <div class="flex_row">
+                        <b>充值</b>
+                        <div>
+                            <input type="number" name="money" id="exchangeamount" value="0" onblur="exchangecalcredit()" size="30" class="px" min="1" max="1000" />
+                            <b>{$_G['setting']['extcredits'][$csetting['moneytype']]['title']}</b>
+                            <button type="button" onclick="document.getElementById('exchangeamount').value=this.innerText;exchangecalcredit();">1</button>
+                            <button type="button" onclick="document.getElementById('exchangeamount').value=this.innerText;exchangecalcredit();">10</button>
+                            <button type="button" onclick="document.getElementById('exchangeamount').value=this.innerText;exchangecalcredit();">100</button>
+                            <button type="button" onclick="document.getElementById('exchangeamount').value=this.innerText;exchangecalcredit();">1000</button>
+                        </div>
+                    </div>
+                    <div class="flex_row eacdetaildata">
+                        <b>EAC即时价:</b>
+                        <label id="exchangeData">{$csetting['bizhong']}0000000</label>
+                    </div>
+                    <div class="flex_row eacdetaildata">
+                        <b>EAC数量:</b>
+                        <label id="eacamount"></label>
+                    </div>
+                    <div class="flex_row eacdetaildata" id="rmbamount">
+                        <b>约合人民币:</b>
+                        <label></label>
+                    </div>
+                    <div class="flex_row" style="display: none;">
+                        <b>充值备注:</b>
+                        <input type="text" name="remark" id="remark" value="0" readonly="readonly" disabled="on" size="30" class="px" style="border: 0;background: transparent;" />
+                    </div>
+                    <div class="flex_row" style="display: none;">
+                        <b>可获得{$_G['setting']['extcredits'][$csetting['moneytype']]['title']}:</b>
+                        <input type="text" name="jfnum" id="exchangedesamount" value="0" readonly="readonly" disabled="on" size="30" class="px" style="border: 0;background: transparent;" />
+                    </div>
+                    <p class="o pns{if empty($_G['inajax'])} mtw{/if}">
+                        <button type="button" onclick="submitform();" class="pn vm" name="addsubmit" value="yes"><strong>{lang submit}</strong></button>
+                        <!-- <span id="querymsg">系统查询中...确认个数:x个</span> -->
+                    </p>
+                </div>
+
+                <div id="qrcode" style="width: 163px;">
+                </div>
+                <div class="flex_col eacpay_remark" style="width: 200px;">
+                    <p>人民币现金 1元 = {$csetting['moneybl']}{$_G['setting']['extcredits'][$csetting['moneytype']]['title']}</p>
+                    <p>单次最低充值 $csetting['moneymin']RMB</p>
+                    <p>单次最高充值 1000RMB</p>
+                    <p>最近30天最高充值 10000RMB</p>
+                    <p>EACPAY手机端区块链钱包下载:</p>
+                    <p>1、google play</p>
+                    <p>2、eacpay.com官网下载</p>
+                    <p>3、手机浏览器扫一扫，下载EACPAY</p>
+                    <img src="source/plugin/cc_cansnow_eacpay/app.png" width="130" />
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="formhash" value="{FORMHASH}" />
+        <!--{if !empty($_G['inajax'])}--><input type="hidden" name="handlekey" value="$_GET['handlekey']" />
+        <!--{/if}-->
+    </form>
+    <div>
+        <table summary="转账与兑换" cellspacing="0" cellpadding="0" class="dt mtm">
+            <caption>
+                <h2 class="mbm xs2">充值记录
+                    <!-- <a href="plugin.php?id=cc_cansnow_eacpay:recharge&action=log" class="xi2 xs1 xw0 y">查看更多»</a> -->
+                </h2>
+            </caption>
+            <tbody>
+                <tr class="header">
+                    <th>订单号</th>
+                    <th>创建时间</th>
+                    <th>金额</th>
+                    <th>状态</th>
+                </tr>
+                <!--{loop $orderlist $key $value}-->
+                <tr>
+                    <td>
+                        <!--{$value['order_id']}-->
+                    </td>
+                    <td>
+                        <!--{date($value['create_time'],'Y-m-d H:i:s')}-->
+                    </td>
+                    <td>
+                        <!--{$value['amount']}-->
+                    </td>
+                    <td>
+                        <!--{$statusArr[$value['status']]}-->
+                    </td>
+                </tr>
+                <!--{/loop}-->
+            </tbody>
+        </table>
+    </div>
+    <div id="loading">
+        <svg class="circle" xmlns="http://www.w3.org/2000/svg" version="1.1" width="100" height="100">
+            <path fill="none" stroke="#e5e5e5" d="M50,4A46,46,0,1,1,49.99,4" stroke-width="5" ></path>
+            <path fill="none" stroke="#3080ec" d="M50,4A46,46,0,1,1,22.96187839454623,12.785218258752423" stroke-width="5"></path>
+        </svg>
+        <div class="progresstext">当前状态:正在查询订单</div>
+    </div>
+    <script type="text/javascript">
+        jQuery.noConflict();
+        var order = {};
+        document.getElementById('remark').value = "recharge{$_G['uid']}" + (new Date().getTime()) + Math.floor(Math.random() * 100000 + 1);
+        String.prototype.toInt = function() {
+            var s = parseInt(this);
+            return isNaN(s) ? 0 : s;
+        }
+
+        function conversion(id) {
+            var money_r = $("#exchangeamount").val();
+            var money_e = $("#eacamount").val();
+            var money_r_rate = $("#money_r_rate").text(); //1eac==0.0015rmb
+            if (money_r || money_e) {
+
+                if (id == "money_r") {
+                    // console.log((money_r+money_e_rate));
+                    $("#money_e").val((money_r / money_r_rate).toFixed(3));
+                } else if (id == "money_e") {
+                    $("#money_r").val((money_e * money_r_rate).toFixed(5));
+                }
+            }
+            if ($("#affirm_div").is(':visible')) {
+                alert("为保证充值成功,请等待上一笔充值完成,再进行下一笔充值,谢谢");
+            } else {
+                if (money_r_rate) {
+                    makeCode();
+                } else {
+                    mui.alert("请等待即时行情价加载~在进行充值", function() {
+                        $("#money_e").val("");
+                        $("#money_r").val("");
+                    });
+                }
+            }
+        }
+
+        function exchangecalcredit() {
+            jQuery('#exchangeamount').val(jQuery('#exchangeamount').val().toInt());
+            if (jQuery('#exchangeamount').val() != 0) {
+                jQuery('#exchangedesamount').val(Math.floor($csetting['moneybl'] * jQuery('#exchangeamount').val()));
+                jQuery.getJSON('plugin.php?id=cc_cansnow_eacpay:recharge&action=geteac&amount=' + jQuery('#exchangeamount').val(), function(d) {
+                    jQuery('#exchangeData').text(d.exchange + "{$bizhong}");
+                    jQuery('#eacamount').text(d.eacamount);
+                    jQuery('#remark').val(d.orderid);
+                    jQuery('#rmbamount b').text("约合{$bizhongTxt}:");
+                    jQuery('#rmbamount label').text(d.rmb);
+                    jQuery('.eacdetaildata').css('display', 'flex');
+                    jQuery('button[name=addsubmit]').css('display', 'block');
+                });
+            } else {
+                jQuery('#exchangedesamount').val('0');
+            }
+        }
+
+        exchangecalcredit();
+        var timeId = null;
+
+        function check() {
+            jQuery.get('plugin.php?id=cc_cansnow_eacpay:recharge&action=check&orderid=' + order.orderid, function(d) {
+                if (d == "ok") {
+                    showDialog("充值成功", 'alert_right');
+                    clearInterval(timeId);
+                    setTimeout(function() {
+                        location.reload();
+                    }, 2000);
+                } else {
+                    jQuery('#loading .progresstext').text(d);
+                }
+            });
+        }
+
+        function submitform() {
+            var amount = parseInt(jQuery('#exchangeamount').val());
+            if(amount == 0){
+                alert('充值金额必须大于0');
+            }
+            jQuery.getJSON('plugin.php?id=cc_cansnow_eacpay:recharge&action=geteac&submit=1&amount=' + jQuery('#exchangeamount').val(), function(d) {
+                order = d;
+                jQuery('#exchangeData').text(d.exchange + "{$bizhong}");
+                jQuery('#eacamount').text(d.eacamount);
+                jQuery('#remark').val(d.orderid);
+                jQuery('#rmbamount b').text("约合{$bizhongTxt}:");
+                jQuery('#rmbamount label').text(d.rmb);
+                jQuery('.eacdetaildata').css('display', 'flex');
+                jQuery('button[name=addsubmit]').css('display', 'none');
+                jQuery('#qrcode').html('<div>'
+                    +'  <img src="' + d.qrcode + '" width="150"/>'
+                    +'  <div>EACPAY钱包扫码支付</div>'
+                    +'  <div><button type="button" class="pn vm" id="paysuccessBtn"><strong>我已扫描支付成功</strong></button></div>'
+                    +'</div>');
+            });
+        }
+
+        jQuery(document).on('click','#paysuccessBtn',function(){
+            jQuery('#loading').show();
+            jQuery(this).hide();
+            timeId = setInterval(check, 3000); //开始任务
+        });
+    </script>
+</div>
+<!--{if $_G['inajax']}-->
+{template common/footer}
+<!--{/if}-->
