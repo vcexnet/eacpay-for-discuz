@@ -16,6 +16,7 @@ eacpay for discuz，eacpay针对discuz的支付插件。基于earthcoin区块链
 1.  下载对应语言和编码的插件（SC：简体中文，TS：繁体中文），关于编码请登录自己论坛后台首页查看
 2.  下载插件后上传到论坛目录source/plugin下面（将会逐渐上线到discuz应用中心，到时候可以直接在应用中心下载）
 3.  登录论坛后台，点击"应用"-->“插件“-->找到Eacpay区块链支付，安装即可
+![输入图片说明](https://images.gitee.com/uploads/images/2021/1024/161605_c1926bf8_5105092.png "1.png")
 4.  安装完成后，点击“设置”，主要的设置项如下：
 - EAC定价基准交易所：这个当前基本上是固定的。无需改变;
 - 是否允许提现，根据自己论坛运营情况决定是否开启；
@@ -25,7 +26,8 @@ eacpay for discuz，eacpay针对discuz的支付插件。基于earthcoin区块链
 - 充值比例：就是1元=多少积分类型
 - 收款地址：地址来自earthcoin电脑端钱包，或者eacpay的接收生成的地址。这是插件必须要正确填写的，否则不能收到eac。电脑端钱包下载：[https://www.eaczg.com](https://www.eaczg.com)；
 - 确认数量：区块链支付后，多少个确认表示支付成功。数量越多，安全性越高，但是支付成功需要的时间越长，建议3-6个即可。
-
+![输入图片说明](https://images.gitee.com/uploads/images/2021/1024/161624_f7145d54_5105092.png "2.png")
+![输入图片说明](https://images.gitee.com/uploads/images/2021/1024/161642_6e0a7371_5105092.png "3.png")
 #### 使用说明
 
 1.  用户点击”eacpay区块链支付“输入需要充值的金额，不接受小数，充值金额不受限制，点击”提交“
@@ -34,4 +36,4 @@ eacpay for discuz，eacpay针对discuz的支付插件。基于earthcoin区块链
 
 4.  点击”eacpay区块链支付“中的提现，输入需要提现的金额，点击”申请提现“
 5.  站长或者管理员登录论坛后台，在”应用“--->”插件“里面的提现订单。点击订单号，使用eacpay扫描弹出的二维码，点击发送。完成提现支付，点击状态，将其更改为：完成即可。
-
+![输入图片说明](https://images.gitee.com/uploads/images/2021/1024/161659_08546a23_5105092.png "截屏2021-10-24 16.06.55.png")
