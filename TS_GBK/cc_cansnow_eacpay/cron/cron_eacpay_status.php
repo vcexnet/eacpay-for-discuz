@@ -14,6 +14,11 @@ if(!defined('IN_DISCUZ')) {
 }
 
 require_once "../base.php";
+$maxtime = time()-$csetting['maxwaitpaytime']*60;
+DB::update('eacpay_order',array(
+	'status'=>'cancel'
+),"status='wait' and type='recharge' and create_time<".$maxtime);
+
 $time = time()-60*5;
 $list = DB::fetch_all("select * from ".DB::table("eacpay_order")." where status='wait' and type='recharge' and last_time<".$time);
 //$vo =DB::fetch_first("select * from ".DB::table("eacpay_order")." where order_id='".$_GET['orderid']."'");

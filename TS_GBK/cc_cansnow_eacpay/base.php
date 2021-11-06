@@ -140,7 +140,7 @@ function UsdtPrice($priceType='CNY'){
         return $USDrate;
     }else if($priceType =='EUR'){
     	$EURrate=1;
-    	preg_match("/\{currency:'�WԪ',refePrice:'(.*?)',code:'EUR.*?\}/",$hlret,$macths);
+    	preg_match("/\{currency:'ŷԪ',refePrice:'(.*?)',code:'EUR.*?\}/",$hlret,$macths);
     	if(count($macths)!=0){
     		$EURrate = floatval($macths[1])/100;
     	}

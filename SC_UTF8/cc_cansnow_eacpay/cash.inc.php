@@ -24,9 +24,9 @@ if ($action == 'cash') {
 			"type"			=>	'cash',
 			"status"		=>	'wait',
 		);
-		$moneymin =  ($csetting['moneymin'] > 1) ? $csetting['moneymin'] : 1;
-		if ($amount < $moneymin || $amount > 99999 || $amount == '') {
-			showmessage("充值金额不能小于".$moneymin."或大于99999",'index.php');
+		$moneymin =  1;
+		if ($amount < $moneymin || $amount == '') {
+			showmessage("提现金额不能小于".$moneymin,'index.php');
 		}
 		$d = array();
 		$d['extcredits'.$csetting['moneytype']] = 0-$vo['amount'];

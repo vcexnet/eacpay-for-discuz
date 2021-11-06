@@ -26,7 +26,7 @@ CREATE TABLE `cdb_eacpay_order`  (
   `create_time` int(11) NULL DEFAULT 0,
   `pay_time` int(11) NULL DEFAULT 0,
   `last_time` int(11) NULL DEFAULT 0,
-  `status` enum('reject','wait','complete','payed') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `status` enum('cancel','reject','wait','complete','payed') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `type` enum('recharge','cash') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`order_id`) USING BTREE,
   INDEX `plid`(`order_id`) USING BTREE

@@ -2,8 +2,8 @@
 <root>
 	<item id="Title"><![CDATA[Discuz! Plugin]]></item>
 	<item id="Version"><![CDATA[X3.4]]></item>
-	<item id="Time"><![CDATA[2021-10-17 18:09]]></item>
-	<item id="From"><![CDATA[Discuz! Board (http://dz.com/)]]></item>
+	<item id="Time"><![CDATA[2021-11-06 15:50]]></item>
+	<item id="From"><![CDATA[EACPay for discuz]]></item>
 	<item id="Data">
 		<item id="plugin">
 			<item id="available"><![CDATA[1]]></item>
@@ -100,14 +100,23 @@
 		<item id="var">
 			<item id="0">
 				<item id="displayorder"><![CDATA[0]]></item>
+				<item id="title"><![CDATA[開啟插件]]></item>
+				<item id="description"><![CDATA[EACPAY支付是基於區塊鏈代幣,價格會存在波動,您收到的EAC兌換法幣可能會有變化, 介意請勿使用]]></item>
+				<item id="variable"><![CDATA[open]]></item>
+				<item id="type"><![CDATA[radio]]></item>
+				<item id="value"><![CDATA[1]]></item>
+				<item id="extra"><![CDATA[]]></item>
+			</item>
+			<item id="1">
+				<item id="displayorder"><![CDATA[0]]></item>
 				<item id="title"><![CDATA[EAC定價基準交易所]]></item>
-				<item id="description"><![CDATA[EAC定價基準交易所]]></item>
+				<item id="description"><![CDATA[必填，目前默認http://www.aex.com(安銀)]]></item>
 				<item id="variable"><![CDATA[exhangeapi]]></item>
 				<item id="type"><![CDATA[text]]></item>
 				<item id="value"><![CDATA[https://api.aex.zone/v3/depth.php]]></item>
 				<item id="extra"><![CDATA[]]></item>
 			</item>
-			<item id="1">
+			<item id="2">
 				<item id="displayorder"><![CDATA[0]]></item>
 				<item id="title"><![CDATA[允許提現]]></item>
 				<item id="description"><![CDATA[]]></item>
@@ -116,16 +125,16 @@
 				<item id="value"><![CDATA[1]]></item>
 				<item id="extra"><![CDATA[]]></item>
 			</item>
-			<item id="2">
+			<item id="3">
 				<item id="displayorder"><![CDATA[0]]></item>
-				<item id="title"><![CDATA[開啟插件]]></item>
-				<item id="description"><![CDATA[EACPAY支付是基於區塊鏈代幣,價格會存在波動,您收到的EAC兌換法幣可能會有變化, 介意請勿使用]]></item>
-				<item id="variable"><![CDATA[open]]></item>
-				<item id="type"><![CDATA[radio]]></item>
-				<item id="value"><![CDATA[1]]></item>
+				<item id="title"><![CDATA[支付超時]]></item>
+				<item id="description"><![CDATA[單位:分鐘]]></item>
+				<item id="variable"><![CDATA[maxwaitpaytime]]></item>
+				<item id="type"><![CDATA[number]]></item>
+				<item id="value"><![CDATA[120]]></item>
 				<item id="extra"><![CDATA[]]></item>
 			</item>
-			<item id="3">
+			<item id="4">
 				<item id="displayorder"><![CDATA[1]]></item>
 				<item id="title"><![CDATA[關閉插件提示]]></item>
 				<item id="description"><![CDATA[]]></item>
@@ -134,7 +143,7 @@
 				<item id="value"><![CDATA[]]></item>
 				<item id="extra"><![CDATA[]]></item>
 			</item>
-			<item id="4">
+			<item id="5">
 				<item id="displayorder"><![CDATA[2]]></item>
 				<item id="title"><![CDATA[插件名稱]]></item>
 				<item id="description"><![CDATA[]]></item>
@@ -143,19 +152,19 @@
 				<item id="value"><![CDATA[EACPAY區塊鏈支付]]></item>
 				<item id="extra"><![CDATA[]]></item>
 			</item>
-			<item id="5">
+			<item id="6">
 				<item id="displayorder"><![CDATA[3]]></item>
-				<item id="title"><![CDATA[Earthcoin區塊鏈瀏覽器 ...]]></item>
-				<item id="description"><![CDATA[]]></item>
+				<item id="title"><![CDATA[Earthcoin區塊鏈瀏覽器]]></item>
+				<item id="description"><![CDATA[必填，用於充值是到EAC區塊鏈上查詢支付情況，可以自行搭建或者查詢公共瀏覽器https://blocks.deveac.com:4040，https://api.eacpay.com:9000]]></item>
 				<item id="variable"><![CDATA[eacpay_server]]></item>
 				<item id="type"><![CDATA[text]]></item>
-				<item id="value"><![CDATA[https://api.eacpay.com:9000]]></item>
+				<item id="value"><![CDATA[https://blocks.deveac.com:4000]]></item>
 				<item id="extra"><![CDATA[]]></item>
 			</item>
-			<item id="6">
+			<item id="7">
 				<item id="displayorder"><![CDATA[4]]></item>
 				<item id="title"><![CDATA[定價基準幣種]]></item>
-				<item id="description"><![CDATA[]]></item>
+				<item id="description"><![CDATA[必選，系統自動將對應的金額數量換成成同等價值的eac個數]]></item>
 				<item id="variable"><![CDATA[bizhong]]></item>
 				<item id="type"><![CDATA[select]]></item>
 				<item id="value"><![CDATA[RMB]]></item>
@@ -163,40 +172,31 @@
 USD=美元
 EUR=歐元]]></item>
 			</item>
-			<item id="7">
+			<item id="8">
 				<item id="displayorder"><![CDATA[5]]></item>
 				<item id="title"><![CDATA[充值積分類型]]></item>
 				<item id="description"><![CDATA[]]></item>
 				<item id="variable"><![CDATA[moneytype]]></item>
 				<item id="type"><![CDATA[extcredit]]></item>
-				<item id="value"><![CDATA[1]]></item>
+				<item id="value"><![CDATA[5]]></item>
 				<item id="extra"><![CDATA[]]></item>
 			</item>
-			<item id="8">
+			<item id="9">
 				<item id="displayorder"><![CDATA[6]]></item>
 				<item id="title"><![CDATA[充值比例]]></item>
 				<item id="description"><![CDATA[例子:填1表示1RMB=1積分,填10表示1RMB=10積分]]></item>
 				<item id="variable"><![CDATA[moneybl]]></item>
 				<item id="type"><![CDATA[number]]></item>
-				<item id="value"><![CDATA[10]]></item>
-				<item id="extra"><![CDATA[]]></item>
-			</item>
-			<item id="9">
-				<item id="displayorder"><![CDATA[7]]></item>
-				<item id="title"><![CDATA[收款地址]]></item>
-				<item id="description"><![CDATA[]]></item>
-				<item id="variable"><![CDATA[recive_token]]></item>
-				<item id="type"><![CDATA[text]]></item>
-				<item id="value"><![CDATA[ea9bbnLBJfrUQvz8U1uRS79J5Sxgrk6iFc]]></item>
+				<item id="value"><![CDATA[1]]></item>
 				<item id="extra"><![CDATA[]]></item>
 			</item>
 			<item id="10">
-				<item id="displayorder"><![CDATA[8]]></item>
-				<item id="title"><![CDATA[確認數量]]></item>
-				<item id="description"><![CDATA[區塊鏈中有多少數量確認才算交易成功,默認1]]></item>
-				<item id="variable"><![CDATA[receiptConfirmation]]></item>
+				<item id="displayorder"><![CDATA[7]]></item>
+				<item id="title"><![CDATA[收款地址]]></item>
+				<item id="description"><![CDATA[必填，請下載EAC錢包，生成一個地址，可以隨時更換收款地址，嚴禁多個網站公用一個地址]]></item>
+				<item id="variable"><![CDATA[recive_token]]></item>
 				<item id="type"><![CDATA[text]]></item>
-				<item id="value"><![CDATA[1]]></item>
+				<item id="value"><![CDATA[eZcwRzRDPiPvM6WUGQXMRLa5MAHkrwWP9t]]></item>
 				<item id="extra"><![CDATA[]]></item>
 			</item>
 			<item id="11">
@@ -209,6 +209,15 @@ EUR=歐元]]></item>
 				<item id="extra"><![CDATA[]]></item>
 			</item>
 			<item id="12">
+				<item id="displayorder"><![CDATA[8]]></item>
+				<item id="title"><![CDATA[確認數量]]></item>
+				<item id="description"><![CDATA[必填，數值越大，確認充值的時間越長，但安全性越高，最低3個，建議不超過是10個]]></item>
+				<item id="variable"><![CDATA[receiptConfirmation]]></item>
+				<item id="type"><![CDATA[text]]></item>
+				<item id="value"><![CDATA[3]]></item>
+				<item id="extra"><![CDATA[]]></item>
+			</item>
+			<item id="13">
 				<item id="displayorder"><![CDATA[9]]></item>
 				<item id="title"><![CDATA[鏈接位置]]></item>
 				<item id="description"><![CDATA[]]></item>
@@ -220,16 +229,16 @@ EUR=歐元]]></item>
 2=積分左側(X2以上)
 3=主導航(X2.5以上)]]></item>
 			</item>
-			<item id="13">
+			<item id="14">
 				<item id="displayorder"><![CDATA[10]]></item>
 				<item id="title"><![CDATA[最低充值金額]]></item>
 				<item id="description"><![CDATA[不能低於1RMB]]></item>
 				<item id="variable"><![CDATA[moneymin]]></item>
 				<item id="type"><![CDATA[number]]></item>
-				<item id="value"><![CDATA[0.01]]></item>
+				<item id="value"><![CDATA[1]]></item>
 				<item id="extra"><![CDATA[]]></item>
 			</item>
-			<item id="14">
+			<item id="15">
 				<item id="displayorder"><![CDATA[11]]></item>
 				<item id="title"><![CDATA[通知提示]]></item>
 				<item id="description"><![CDATA[]]></item>
