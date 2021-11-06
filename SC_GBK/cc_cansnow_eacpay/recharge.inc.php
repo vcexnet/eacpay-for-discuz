@@ -11,11 +11,8 @@ if ($action == 'buy') {
 	$vo =DB::fetch_first("select * from ".DB::table("eacpay_order")." where order_id='".$_GET['orderid']."'");
 	if($vo){
 		$ret = check($vo);
-		if($ret === true){
-			exit('ok');
-		}else{
-			exit($ret);
-		}
+		ob_clean();
+	    exit(json_encode($ret));
 	}
 
 }elseif($action == 'getExchange'){

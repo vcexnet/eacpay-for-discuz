@@ -31,6 +31,7 @@
                 <div class="layui-input-inline" style="width: 100px;">
                     <select name="status">
                         <option value="" <!--{if $_REQUEST['status']==''}-->selected<!--{/if}-->>全部狀態</option>
+                        <option value="cancel" <!--{if $_REQUEST['status']=='cancel'}-->selected<!--{/if}-->>已取消</option>
                         <option value="wait" <!--{if $_REQUEST['status']=='wait'}-->selected<!--{/if}-->>待支付</option>
                         <option value="payed" <!--{if $_REQUEST['status']=='payed'}-->selected<!--{/if}-->>已支付</option>
                         <option value="complete" <!--{if $_REQUEST['status']=='complete'}-->selected<!--{/if}-->>已完成</option>
@@ -88,6 +89,8 @@
                 <a href="javascript:;" class="statusSelect<!--{$value['status']}-->" data-status="<!--{$value['status']}-->" data-orderid="<!--{$value['order_id']}-->">
                     需要手動處理
                 </a>
+                <!--{elseif $value['status'] == 'cancel' }-->
+                已取消
                 <!--{elseif $value['status'] == 'wait' }-->
                 等待支付
                 <!--{else}-->

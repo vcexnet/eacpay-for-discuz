@@ -152,20 +152,6 @@
                         <!-- <span id="querymsg">系統查詢中...確認個數:x個</span> -->
                     </p>
                 </div>
-
-                <div id="qrcode" style="width: 163px;">
-                </div>
-                <div class="flex_col eacpay_remark" style="width: 200px;">
-                    <p>人民幣現金 1元 = {$csetting['moneybl']}{$_G['setting']['extcredits'][$csetting['moneytype']]['title']}</p>
-                    <p>單次最低充值 $csetting['moneymin']RMB</p>
-                    <p>單次最高充值 1000RMB</p>
-                    <p>最近30天最高充值 10000RMB</p>
-                    <p>EACPAY手機端區塊鏈錢包下載:</p>
-                    <p>1、google play</p>
-                    <p>2、eacpay.com官網下載</p>
-                    <p>3、手機瀏覽器掃一掃，下載EACPAY</p>
-                    <img src="source/plugin/cc_cansnow_eacpay/app.png" width="130" />
-                </div>
             </div>
         </div>
         <input type="hidden" name="formhash" value="{FORMHASH}" />
@@ -205,13 +191,32 @@
             </tbody>
         </table>
     </div>
-    <div id="loading">
-        <svg class="circle" xmlns="http://www.w3.org/2000/svg" version="1.1" width="100" height="100">
-            <path fill="none" stroke="#e5e5e5" d="M50,4A46,46,0,1,1,49.99,4" stroke-width="5" ></path>
-            <path fill="none" stroke="#3080ec" d="M50,4A46,46,0,1,1,22.96187839454623,12.785218258752423" stroke-width="5"></path>
-        </svg>
-        <div class="progresstext">當前狀態:正在查詢訂單</div>
-    </div>
+    
+    
+	<div id="eacpaylayer" style="position: absolute;position: fixed;top: 50%;left: 50%;width: 630px;height: 360px;background: #fff;margin: -180px -300px;box-shadow: #87858570 0px 0px 0px 8px;z-index: 999;padding:10px;" class="flex_row">
+		<div class="flex_1">
+			<div id="qrcode" style="text-align: center;">
+				<div style="text-align: center;margin: 30px auto;border-color: #f00;">
+					<span style="display: block;color: red;font-size: 14px;font-weight: 700;">用EACPAY掃碼支付</span>
+					<img src="#" width="150" class="img">
+				</div>
+				<div id="eacpayresult" style="border: 0;width: 80%;margin:30px auto;">
+					<div class="resultmsg" style="text-align: center;font-size: 16px;margin-bottom: 15px;">等待用戶支付...</div>
+					<div class="loading" style="width: 100%;height: 8px;background: #e5e3e3;border-radius: 2px;">
+						<div class="bar" style="width: 0%;background: #2975c4;height: 100%;transition: all 0.2s;border-radius: 2px;"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="flex_col" style="width: 200px;line-height: 25px;font-size: 14px;">
+			<p>人民幣現金 1元 = 1RMB</p>
+			<p>EACPAY手機端區塊鏈錢包下載:</p>
+			<p>1、google play</p>
+			<p>2、<a href="http://www.eacpay.com">eacpay.com官網下載</a></p>
+			<p>3、手機瀏覽器掃一掃，下載EACPAY</p>
+			<img src="source/plugin/cc_cansnow_eacpay/app.jpg" width="160" height="190" />
+		</div>
+	</div>
     <script type="text/javascript">
         jQuery.noConflict();
         var order = {};
@@ -219,33 +224,6 @@
         String.prototype.toInt = function() {
             var s = parseInt(this);
             return isNaN(s) ? 0 : s;
-        }
-
-        function conversion(id) {
-            var money_r = $("#exchangeamount").val();
-            var money_e = $("#eacamount").val();
-            var money_r_rate = $("#money_r_rate").text(); //1eac==0.0015rmb
-            if (money_r || money_e) {
-
-                if (id == "money_r") {
-                    // console.log((money_r+money_e_rate));
-                    $("#money_e").val((money_r / money_r_rate).toFixed(3));
-                } else if (id == "money_e") {
-                    $("#money_r").val((money_e * money_r_rate).toFixed(5));
-                }
-            }
-            if ($("#affirm_div").is(':visible')) {
-                alert("為保證充值成功,請等待上一筆充值完成,再進行下一筆充值,謝謝");
-            } else {
-                if (money_r_rate) {
-                    makeCode();
-                } else {
-                    mui.alert("請等待即時行情價加載~在進行充值", function() {
-                        $("#money_e").val("");
-                        $("#money_r").val("");
-                    });
-                }
-            }
         }
 
         function exchangecalcredit() {
@@ -270,15 +248,27 @@
         var timeId = null;
 
         function check() {
-            jQuery.get('plugin.php?id=cc_cansnow_eacpay:recharge&action=check&orderid=' + order.orderid, function(d) {
-                if (d == "ok") {
-                    showDialog("充值成功", 'alert_right');
+            jQuery.getJSON('plugin.php?id=cc_cansnow_eacpay:recharge&action=check&orderid=' + order.orderid, function(d) {
+                if (d.code == "1") {
                     clearInterval(timeId);
+                    jQuery('#eacpayresult .loading .bar').css('width','100%');
+                    $('#eacpayresult .resultmsg').html("充值成功");
                     setTimeout(function() {
                         location.reload();
                     }, 2000);
+                }else if (d.code == "2") {
+                    jQuery('#eacpayresult .loading .bar').css('width',(parseInt(d.confirmations)/parseInt(d.receiptConfirmation))*100+'%');
+                    jQuery('#eacpayresult .resultmsg').html('正在確認訂單，請稍等...');
+                }else if (d.code == "3") {
+                    jQuery('#eacpayresult .loading .bar').css('width','100%');
+                    jQuery('#eacpayresult .resultmsg').html(d.msg);
+                }else if (d.code == "4") {
+                    jQuery('#eacpayresult .loading .bar').css('width','0%');
+                    jQuery('#eacpayresult .resultmsg').html(d.msg);
                 } else {
-                    jQuery('#loading .progresstext').text(d);
+                    clearInterval(timeId);
+                    jQuery('#eacpayresult .loading .bar').css('width','100%');
+                    jQuery('#eacpayresult .resultmsg').html(d.msg);
                 }
             });
         }
@@ -286,7 +276,7 @@
         function submitform() {
             var amount = parseInt(jQuery('#exchangeamount').val());
             if(amount == 0){
-                alert('充值金額必須大於0');
+                alert('充值金額必大於0');
             }
             jQuery.getJSON('plugin.php?id=cc_cansnow_eacpay:recharge&action=geteac&submit=1&amount=' + jQuery('#exchangeamount').val(), function(d) {
                 order = d;
@@ -297,19 +287,11 @@
                 jQuery('#rmbamount label').text(d.rmb);
                 jQuery('.eacdetaildata').css('display', 'flex');
                 jQuery('button[name=addsubmit]').css('display', 'none');
-                jQuery('#qrcode').html('<div>'
-                    +'  <img src="' + d.qrcode + '" width="150"/>'
-                    +'  <div>EACPAY錢包掃碼支付</div>'
-                    +'  <div><button type="button" class="pn vm" id="paysuccessBtn"><strong>我已掃描支付成功</strong></button></div>'
-                    +'</div>');
+                jQuery('#qrcode .img').attr('src',d.qrcode);
+                jQuery('#eacpaylayer').show();
+                timeId = setInterval(check, 3000);
             });
         }
-
-        jQuery(document).on('click','#paysuccessBtn',function(){
-            jQuery('#loading').show();
-            jQuery(this).hide();
-            timeId = setInterval(check, 3000); //開始任務
-        });
     </script>
 </div>
 <!--{if $_G['inajax']}-->

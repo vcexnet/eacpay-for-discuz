@@ -46,7 +46,7 @@ function test($vo){
 }
 function check($vo=array()){
 	if($vo['status'] == 'complete'){
-		return 'ok';
+		return array('code'=>1,'msg'=>'ok');
 	}
 	global $csetting;
 	$exp = ceil((time()-$vo['create_time'])/60);
@@ -62,7 +62,7 @@ function check($vo=array()){
 	//P($ret);
 	$ret = json_decode($ret,true);
 	if($ret['Error']){
-		return $ret['Error'];
+		return array('code'=>4,'msg'=>$ret['Error'] == 'Payment not found' ? '等待用户支付' : $ret['Error']);
 	}
 	
 	$data =array(
@@ -83,16 +83,16 @@ function check($vo=array()){
 					updatemembercount($vo['uid'],$d);
 					$data['status']		=	'complete';
 					DB::update('eacpay_order', $data, "order_id='$vo[order_id]'");
-					return true;
+		            return array('code'=>1,'msg'=>'ok');
 				}else{
 					DB::update('eacpay_order', $data, "order_id='$vo[order_id]'");
-					return '交易数值不一致，请自行联系站长解决';
+		            return array('code'=>3,'msg'=>'交易数值不一致，请自行联系站长解决');
 				}
 				break;
 			}
 		}
 	}else{
-		return '已确认'.$ret['confirmations'];
+		return array('code'=>2,'confirmations'=>$ret['confirmations'],'receiptConfirmation'=>$ret['receiptConfirmation']);
 	}
 }
 
@@ -122,7 +122,7 @@ function getExchange(){
 		}
 	}
 	$unitPrice = round($unitPrice/5,6);
-	$hl = UsdtPrice($priceType);
+	$hl = huiulv($priceType);
 	$unitPrice=$unitPrice * $hl;
 	return round($unitPrice,6);
 }
@@ -147,4 +147,22 @@ function UsdtPrice($priceType='CNY'){
         return $USDrate/$EURrate;
     }
 	return 1;
+}
+
+function huiulv($priceType='CNY'){
+    if($priceType =='USD'){return 1;}
+	$hlret = cansnow_get('https://api.exchangerate-api.com/v4/latest/USD');
+	$hlret=json_decode($hlret,true);
+	$rate = $hlret['rates'];
+	switch($priceType){
+		case 'CNY':
+			return $rate['CNY'];
+			break;
+		case 'EUR':
+			return $rate['EUR'];
+			break;
+		default:
+			return 1;
+			break;
+	}
 }

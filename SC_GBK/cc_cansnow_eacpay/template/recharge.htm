@@ -152,20 +152,6 @@
                         <!-- <span id="querymsg">系统查询中...确认个数:x个</span> -->
                     </p>
                 </div>
-
-                <div id="qrcode" style="width: 163px;">
-                </div>
-                <div class="flex_col eacpay_remark" style="width: 200px;">
-                    <p>人民币现金 1元 = {$csetting['moneybl']}{$_G['setting']['extcredits'][$csetting['moneytype']]['title']}</p>
-                    <p>单次最低充值 $csetting['moneymin']RMB</p>
-                    <p>单次最高充值 1000RMB</p>
-                    <p>最近30天最高充值 10000RMB</p>
-                    <p>EACPAY手机端区块链钱包下载:</p>
-                    <p>1、google play</p>
-                    <p>2、eacpay.com官网下载</p>
-                    <p>3、手机浏览器扫一扫，下载EACPAY</p>
-                    <img src="source/plugin/cc_cansnow_eacpay/app.png" width="130" />
-                </div>
             </div>
         </div>
         <input type="hidden" name="formhash" value="{FORMHASH}" />
@@ -205,13 +191,32 @@
             </tbody>
         </table>
     </div>
-    <div id="loading">
-        <svg class="circle" xmlns="http://www.w3.org/2000/svg" version="1.1" width="100" height="100">
-            <path fill="none" stroke="#e5e5e5" d="M50,4A46,46,0,1,1,49.99,4" stroke-width="5" ></path>
-            <path fill="none" stroke="#3080ec" d="M50,4A46,46,0,1,1,22.96187839454623,12.785218258752423" stroke-width="5"></path>
-        </svg>
-        <div class="progresstext">当前状态:正在查询订单</div>
-    </div>
+    
+    
+	<div id="eacpaylayer" style="position: absolute;position: fixed;top: 50%;left: 50%;width: 630px;height: 360px;background: #fff;margin: -180px -300px;box-shadow: #87858570 0px 0px 0px 8px;z-index: 999;padding:10px;" class="flex_row">
+		<div class="flex_1">
+			<div id="qrcode" style="text-align: center;">
+				<div style="text-align: center;margin: 30px auto;border-color: #f00;">
+					<span style="display: block;color: red;font-size: 14px;font-weight: 700;">用EACPAY扫码支付</span>
+					<img src="#" width="150" class="img">
+				</div>
+				<div id="eacpayresult" style="border: 0;width: 80%;margin:30px auto;">
+					<div class="resultmsg" style="text-align: center;font-size: 16px;margin-bottom: 15px;">等待用户支付...</div>
+					<div class="loading" style="width: 100%;height: 8px;background: #e5e3e3;border-radius: 2px;">
+						<div class="bar" style="width: 0%;background: #2975c4;height: 100%;transition: all 0.2s;border-radius: 2px;"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="flex_col" style="width: 200px;line-height: 25px;font-size: 14px;">
+			<p>人民币现金 1元 = 1RMB</p>
+			<p>EACPAY手机端区块链钱包下载:</p>
+			<p>1、google play</p>
+			<p>2、<a href="http://www.eacpay.com">eacpay.com官网下载</a></p>
+			<p>3、手机浏览器扫一扫，下载EACPAY</p>
+			<img src="source/plugin/cc_cansnow_eacpay/app.jpg" width="160" height="190" />
+		</div>
+	</div>
     <script type="text/javascript">
         jQuery.noConflict();
         var order = {};
@@ -270,15 +275,27 @@
         var timeId = null;
 
         function check() {
-            jQuery.get('plugin.php?id=cc_cansnow_eacpay:recharge&action=check&orderid=' + order.orderid, function(d) {
-                if (d == "ok") {
-                    showDialog("充值成功", 'alert_right');
+            jQuery.getJSON('plugin.php?id=cc_cansnow_eacpay:recharge&action=check&orderid=' + order.orderid, function(d) {
+                if (d.code == "1") {
                     clearInterval(timeId);
+                    jQuery('#eacpayresult .loading .bar').css('width','100%');
+                    $('#eacpayresult .resultmsg').html("充值成功");
                     setTimeout(function() {
                         location.reload();
                     }, 2000);
+                }else if (d.code == "2") {
+                    jQuery('#eacpayresult .loading .bar').css('width',(parseInt(d.confirmations)/parseInt(d.receiptConfirmation))*100+'%');
+                    jQuery('#eacpayresult .resultmsg').html('正在确认订单，请稍等...');
+                }else if (d.code == "3") {
+                    jQuery('#eacpayresult .loading .bar').css('width','100%');
+                    jQuery('#eacpayresult .resultmsg').html(d.msg);
+                }else if (d.code == "4") {
+                    jQuery('#eacpayresult .loading .bar').css('width','0%');
+                    jQuery('#eacpayresult .resultmsg').html(d.msg);
                 } else {
-                    jQuery('#loading .progresstext').text(d);
+                    clearInterval(timeId);
+                    jQuery('#eacpayresult .loading .bar').css('width','100%');
+                    jQuery('#eacpayresult .resultmsg').html(d.msg);
                 }
             });
         }
@@ -297,19 +314,11 @@
                 jQuery('#rmbamount label').text(d.rmb);
                 jQuery('.eacdetaildata').css('display', 'flex');
                 jQuery('button[name=addsubmit]').css('display', 'none');
-                jQuery('#qrcode').html('<div>'
-                    +'  <img src="' + d.qrcode + '" width="150"/>'
-                    +'  <div>EACPAY钱包扫码支付</div>'
-                    +'  <div><button type="button" class="pn vm" id="paysuccessBtn"><strong>我已扫描支付成功</strong></button></div>'
-                    +'</div>');
+                jQuery('#qrcode .img').attr('src',d.qrcode);
+                jQuery('#eacpaylayer').show();
+                timeId = setInterval(check, 3000); //开始任务
             });
         }
-
-        jQuery(document).on('click','#paysuccessBtn',function(){
-            jQuery('#loading').show();
-            jQuery(this).hide();
-            timeId = setInterval(check, 3000); //开始任务
-        });
     </script>
 </div>
 <!--{if $_G['inajax']}-->
