@@ -183,7 +183,7 @@
                     <td>
                         <!--{$value['amount']}-->
                     </td>
-                    <td>
+                    <td class="status_<!--{$value['status']}-->" data-orderid="<!--{$value['order_id']}-->" data-eac="<!--{$value['eac']}-->">
                         <!--{$statusArr[$value['status']]}-->
                     </td>
                 </tr>
@@ -193,7 +193,7 @@
     </div>
     
     
-	<div id="eacpaylayer" style="position: absolute;position: fixed;top: 50%;left: 50%;width: 630px;height: 360px;background: #fff;margin: -180px -300px;box-shadow: #87858570 0px 0px 0px 8px;z-index: 999;padding:10px;" class="flex_row">
+	<div id="eacpaylayer" style="position: absolute;position: fixed;top: 50%;left: 50%;width: 630px;height: 360px;background: #fff;margin: -180px -300px;box-shadow: #87858570 0px 0px 0px 8px;z-index: 999;padding:10px;display:none;" class="flex_row">
 		<div class="flex_1">
 			<div id="qrcode" style="text-align: center;">
 				<div style="text-align: center;margin: 30px auto;border-color: #f00;">
@@ -252,7 +252,7 @@
                 if (d.code == "1") {
                     clearInterval(timeId);
                     jQuery('#eacpayresult .loading .bar').css('width','100%');
-                    $('#eacpayresult .resultmsg').html("充值成功");
+                    jQuery('#eacpayresult .resultmsg').html("充值成功");
                     setTimeout(function() {
                         location.reload();
                     }, 2000);
@@ -275,10 +275,14 @@
 
         function submitform() {
             var amount = parseInt(jQuery('#exchangeamount').val());
-            if(amount == 0){
+            if(amount <= 0){
                 alert('充值金額必大於0');
             }
-            jQuery.getJSON('plugin.php?id=cc_cansnow_eacpay:recharge&action=geteac&submit=1&amount=' + jQuery('#exchangeamount').val(), function(d) {
+            jQuery.getJSON('plugin.php?id=cc_cansnow_eacpay:recharge&action=geteac&submit=1&amount=' + amount, function(d) {
+                if(d.msg){
+                    alert(d.msg);
+                    return ;
+                }
                 order = d;
                 jQuery('#exchangeData').text(d.exchange + "{$bizhong}");
                 jQuery('#eacamount').text(d.eacamount);
@@ -292,6 +296,15 @@
                 timeId = setInterval(check, 3000);
             });
         }
+        jQuery('.status_wait').on('click',function(){
+            if(!timeId){
+                order.orderid = jQuery(this).data('orderid');
+                order.eac = jQuery(this).data('eac');
+                jQuery('#qrcode .img').attr('src','plugin.php?id=cc_cansnow_eacpay:recharge&action=qrcode&eac='+order.eac+'&orderid='+order.orderid);
+                jQuery('#eacpaylayer').show();
+                timeId = setInterval(check, 3000);
+            }
+        })
     </script>
 </div>
 <!--{if $_G['inajax']}-->

@@ -92,7 +92,7 @@ function check($vo=array()){
 			}
 		}
 	}else{
-		return array('code'=>2,'confirmations'=>$ret['confirmations'],'receiptConfirmation'=>$ret['receiptConfirmation']);
+		return array('code'=>2,'confirmations'=>$ret['confirmations'],'receiptConfirmation'=>$csetting['receiptConfirmation']);
 	}
 }
 

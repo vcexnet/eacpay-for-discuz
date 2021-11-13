@@ -19,6 +19,11 @@ if ($action == 'buy') {
 	echo getExchange();
 }elseif($action == 'geteac'){
 	$amount = floatval($_GET['amount']);
+	if($amount<=0){
+	    echo json_encode(array(
+	        "msg"=>"充值金额必须大于0",
+	    ));
+	}
 	$submit = intval($_REQUEST['submit']);
 	$exchangeData = getExchange();
 	list($msec, $sec) = explode(' ', microtime());
