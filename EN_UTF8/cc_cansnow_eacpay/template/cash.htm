@@ -1,0 +1,163 @@
+<!--{if $_G['inajax']}-->
+{template common/header}
+<!--{/if}-->
+<script src="source/plugin/cc_cansnow_eacpay/jquery.min.js" type="text/javascript"></script>
+<div id="main_messaqge">
+    <!--{if $csetting['allow_cash']}-->
+    <h3 class="flb">
+        <em>$csetting['pluginname']</em>
+        <span>
+            <!--{if $_G['inajax']}--><a href="javascript:;" class="flbc" onclick="hideWindow('{$_GET['handlekey']}')" title="{lang close}">{lang close}</a><!--{/if}-->
+        </span>
+    </h3>
+
+    <ul class="creditl mtm bbda cl">
+    </ul>
+    <style>
+        .flex_row {
+            display: flex;
+            flex-direction: row;
+            margin: 10px 0;
+        }
+        
+        .flex_row b {
+            width: 80px;
+        }
+        
+        .flex_col {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .flex_1 {
+            flex: 1;
+        }
+        
+        .eacpay_remark {
+            padding: 0 0 0 40px;
+            width: 200px;
+        }
+        
+        .eacpay_remark p {}
+    </style>
+    <form action="plugin.php?id=cc_cansnow_eacpay:cash&action=cash" method="post" name="add" id="add" enctype="multipart/form-data">
+        <div style="padding:10px;">
+            <div class="flex_row">
+                <div class="flex_col flex_1">
+                    <div class="flex_row">
+                        <b>Withdrawal address.</b>
+                        <input type="text" name="cash_address" id="cash_address" value="{$cash_address}" size="64" min-length="30" class="px" />
+                    </div>
+                    <div class="flex_row">
+                        <b></b>
+                        <span>The receipt address is required, otherwise you can not withdraw, please make sure to fill in the correct, blockchain payment after irreversible, do not bear the resulting losses, EACPAY wallet to receive the generated address</span> </div>
+
+                    <div class="flex_row">
+                        <b>Amount.</b>
+                        <input type="number" name="money" id="cashamount" value="1" onchange="exchangecalcredit()" size="5" min="1" max="{$usermoney['extcredits'.$csetting['moneytype']]}" class="px" /> {$_G['setting']['extcredits'][$csetting['moneytype']]['title']}
+                        <button type="button" onclick="document.getElementById('cashamount').value={$usermoney['extcredits'.$csetting['moneytype']]};exchangecalcredit();">All</button>
+                        <span>Max{$usermoney['extcredits'.$csetting['moneytype']]}{$_G['setting']['extcredits'][$csetting['moneytype']]['title']}</span>
+                    </div>
+                    <div class="flex_row">
+                        <b style="width:80px;">EAC price:</b>
+                        <label id="eacas">{$exchangeData}{$bizhong}</label>
+                    </div>
+                    <div class="flex_row">
+                        <b style="width:80px;">Estimated:</b>
+                        <label id="eacamount">0 EAC</label>
+                    </div>
+                    <div class="flex_row" style="display: none;">
+                        <b style="width:80px;">Withdrawal Remarks:</b>
+                        <input type="text" name="remark" id="remark" value="0" readonly="readonly" disabled="on" size="30" class="px" style="border: 0;background: transparent;" />
+                    </div>
+                    <input type="hidden" name="formhash" value="{FORMHASH}" />
+                    <!--{if !empty($_G['inajax'])}--><input type="hidden" name="handlekey" value="$_GET['handlekey']" />
+                    <!--{/if}-->
+                    <p class="o pns{if empty($_G['inajax'])} mtw{/if}">
+                        <button type="submit" class="pn vm" name="addsubmit" value="yes"><strong>Apply</strong></button>
+                    </p>
+                </div>
+                <div class="flex_col eacpay_remark">
+                    <p>Cash 1$ = {$csetting['moneybl']}{$_G['setting']['extcredits'][$csetting['moneytype']]['title']}</p>
+                    <p>EACPAY wallet download:</p>
+                    <p>1、google play</p>
+                    <p>2、eacpay.com download</p>
+                    <p>3、Swipe your mobile browser to download EACPAY</p>
+                    <img src="source/plugin/cc_cansnow_eacpay/app.png" width="130" />
+                </div>
+            </div>
+        </div>
+    </form>
+    <ul class="creditl mtm bbda cl">
+    </ul>
+    <script type="text/javascript">
+        jQuery.noConflict();
+
+        var exchangeData = parseFloat('{$exchangeData}');
+        var moneybl = parseInt("{$csetting['moneybl']}");
+
+
+        document.getElementById('remark').value = "withdraw_{$_G['uid']}" + (new Date().getTime()) + Math.floor(Math.random() * 100000 + 1);
+        String.prototype.toInt = function() {
+            var s = parseInt(this);
+            return isNaN(s) ? 0 : s;
+        }
+
+        function exchangecalcredit() {
+            cashamount = jQuery('#cashamount');
+            cashamount.val(cashamount.val().toInt());
+            if (cashamount.val() != 0) {
+
+                var eac =  cashamount.val() / moneybl / exchangeData;
+                eac = eac.toFixed(3);
+                jQuery('#eacamount').text(eac + ' EAC');
+            } else {
+                cashamount.val('0');
+            }
+        }
+
+        exchangecalcredit();
+    </script>
+
+    <div>
+        <table summary="Withdrawal" cellspacing="0" cellpadding="0" class="dt mtm">
+            <caption>
+                <h2 class="mbm xs2">Withdrawal record
+                    <!-- <a href="plugin.php?id=cc_cansnow_eacpay:recharge&action=log" class="xi2 xs1 xw0 y">查看更多»</a> -->
+                </h2>
+            </caption>
+            <tbody>
+                <tr class="header">
+                    <th>Order No.</th>
+                    <th>Creation time</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                </tr>
+                <!--{loop $orderlist $key $value}-->
+                <tr>
+                    <td>
+                        <!--{$value['order_id']}-->
+                    </td>
+                    <td>
+                        <!--{date($value['create_time'],'Y-m-d H:i:s')}-->
+                    </td>
+                    <td>
+                        <!--{$value['amount']}-->{$_G['setting']['extcredits'][$csetting['moneytype']]['title']}
+                    </td>
+                    <td>
+                        <!--{$statusArr[$value['status']]}-->
+                    </td>
+                </tr>
+                <!--{/loop}-->
+            </tbody>
+        </table>
+    </div>
+    <!--{/if}-->
+    <!--{if !$csetting['allow_cash']}-->
+    <div style="border: 1px dashed #CDCDCD;padding: 20px;color:#f00;">The system does not enable the withdrawal function</div>
+    <!--{/if}-->
+
+</div>
+<!--{if $_G['inajax']}-->
+{template common/footer}
+<!--{/if}-->

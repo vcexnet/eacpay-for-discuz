@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<root>
+	<item id="Title"><![CDATA[Discuz! Plugin]]></item>
+	<item id="Version"><![CDATA[X3.4]]></item>
+	<item id="Time"><![CDATA[2021-11-06 15:50]]></item>
+	<item id="From"><![CDATA[EACPay for discuz]]></item>
+	<item id="Data">
+		<item id="plugin">
+			<item id="available"><![CDATA[1]]></item>
+			<item id="adminid"><![CDATA[1]]></item>
+			<item id="name"><![CDATA[EACPAY Payment]]></item>
+			<item id="identifier"><![CDATA[cc_cansnow_eacpay]]></item>
+			<item id="description"><![CDATA[Eacpay]]></item>
+			<item id="datatables"><![CDATA[]]></item>
+			<item id="directory"><![CDATA[cc_cansnow_eacpay/]]></item>
+			<item id="copyright"><![CDATA[cansnow]]></item>
+			<item id="version"><![CDATA[1.0]]></item>
+			<item id="__modules">
+				<item id="0">
+					<item id="name"><![CDATA[cc_cansnow_eacpay]]></item>
+					<item id="param"><![CDATA[]]></item>
+					<item id="menu"><![CDATA[]]></item>
+					<item id="url"><![CDATA[]]></item>
+					<item id="type"><![CDATA[11]]></item>
+					<item id="adminid"><![CDATA[0]]></item>
+					<item id="displayorder"><![CDATA[0]]></item>
+					<item id="navtitle"><![CDATA[]]></item>
+					<item id="navicon"><![CDATA[]]></item>
+					<item id="navsubname"><![CDATA[]]></item>
+					<item id="navsuburl"><![CDATA[]]></item>
+				</item>
+				<item id="1">
+					<item id="name"><![CDATA[help]]></item>
+					<item id="param"><![CDATA[]]></item>
+					<item id="menu"><![CDATA[User Manual]]></item>
+					<item id="url"><![CDATA[]]></item>
+					<item id="type"><![CDATA[3]]></item>
+					<item id="adminid"><![CDATA[0]]></item>
+					<item id="displayorder"><![CDATA[0]]></item>
+					<item id="navtitle"><![CDATA[]]></item>
+					<item id="navicon"><![CDATA[]]></item>
+					<item id="navsubname"><![CDATA[]]></item>
+					<item id="navsuburl"><![CDATA[]]></item>
+				</item>
+				<item id="2">
+					<item id="name"><![CDATA[eacpay_admin]]></item>
+					<item id="param"><![CDATA[type=cash]]></item>
+					<item id="menu"><![CDATA[Withdrawal orders]]></item>
+					<item id="url"><![CDATA[]]></item>
+					<item id="type"><![CDATA[3]]></item>
+					<item id="adminid"><![CDATA[0]]></item>
+					<item id="displayorder"><![CDATA[0]]></item>
+					<item id="navtitle"><![CDATA[]]></item>
+					<item id="navicon"><![CDATA[]]></item>
+					<item id="navsubname"><![CDATA[]]></item>
+					<item id="navsuburl"><![CDATA[]]></item>
+				</item>
+				<item id="3">
+					<item id="name"><![CDATA[eacpay_admin]]></item>
+					<item id="param"><![CDATA[type=recharge]]></item>
+					<item id="menu"><![CDATA[Recharge order]]></item>
+					<item id="url"><![CDATA[]]></item>
+					<item id="type"><![CDATA[3]]></item>
+					<item id="adminid"><![CDATA[0]]></item>
+					<item id="displayorder"><![CDATA[0]]></item>
+					<item id="navtitle"><![CDATA[]]></item>
+					<item id="navicon"><![CDATA[]]></item>
+					<item id="navsubname"><![CDATA[]]></item>
+					<item id="navsuburl"><![CDATA[]]></item>
+				</item>
+				<item id="4">
+					<item id="name"><![CDATA[recharge]]></item>
+					<item id="param"><![CDATA[]]></item>
+					<item id="menu"><![CDATA[Recharge]]></item>
+					<item id="url"><![CDATA[]]></item>
+					<item id="type"><![CDATA[19]]></item>
+					<item id="adminid"><![CDATA[0]]></item>
+					<item id="displayorder"><![CDATA[1]]></item>
+					<item id="navtitle"><![CDATA[]]></item>
+					<item id="navicon"><![CDATA[]]></item>
+					<item id="navsubname"><![CDATA[]]></item>
+					<item id="navsuburl"><![CDATA[]]></item>
+				</item>
+				<item id="5">
+					<item id="name"><![CDATA[cash]]></item>
+					<item id="param"><![CDATA[]]></item>
+					<item id="menu"><![CDATA[Withdrawal]]></item>
+					<item id="url"><![CDATA[]]></item>
+					<item id="type"><![CDATA[19]]></item>
+					<item id="adminid"><![CDATA[0]]></item>
+					<item id="displayorder"><![CDATA[2]]></item>
+					<item id="navtitle"><![CDATA[]]></item>
+					<item id="navicon"><![CDATA[]]></item>
+					<item id="navsubname"><![CDATA[]]></item>
+					<item id="navsuburl"><![CDATA[]]></item>
+				</item>
+			</item>
+		</item>
+		<item id="version"><![CDATA[X3.4]]></item>
+		<item id="var">
+			<item id="0">
+				<item id="displayorder"><![CDATA[0]]></item>
+				<item id="title"><![CDATA[Open Plugin]]></item>
+				<item id="description"><![CDATA[EACPAY payment is based on blockchain tokens, the price may fluctuate, the EAC exchange fiat currency you receive may change, please do not use]]></item>
+				<item id="variable"><![CDATA[open]]></item>
+				<item id="type"><![CDATA[radio]]></item>
+				<item id="value"><![CDATA[1]]></item>
+				<item id="extra"><![CDATA[]]></item>
+			</item>
+			<item id="1">
+				<item id="displayorder"><![CDATA[0]]></item>
+				<item id="title"><![CDATA[EAC Benchmark Exchange]]></item>
+				<item id="description"><![CDATA[Required field, currently default http://www.aex.com(Anbank)]]></item>
+				<item id="variable"><![CDATA[exhangeapi]]></item>
+				<item id="type"><![CDATA[text]]></item>
+				<item id="value"><![CDATA[https://api.aex.zone/v3/depth.php]]></item>
+				<item id="extra"><![CDATA[]]></item>
+			</item>
+			<item id="2">
+				<item id="displayorder"><![CDATA[0]]></item>
+				<item id="title"><![CDATA[Withdrawals allow]]></item>
+				<item id="description"><![CDATA[]]></item>
+				<item id="variable"><![CDATA[allow_cash]]></item>
+				<item id="type"><![CDATA[radio]]></item>
+				<item id="value"><![CDATA[1]]></item>
+				<item id="extra"><![CDATA[]]></item>
+			</item>
+			<item id="3">
+				<item id="displayorder"><![CDATA[0]]></item>
+				<item id="title"><![CDATA[Payment Timeout]]></item>
+				<item id="description"><![CDATA[Unit:minute]]></item>
+				<item id="variable"><![CDATA[maxwaitpaytime]]></item>
+				<item id="type"><![CDATA[number]]></item>
+				<item id="value"><![CDATA[120]]></item>
+				<item id="extra"><![CDATA[]]></item>
+			</item>
+			<item id="4">
+				<item id="displayorder"><![CDATA[1]]></item>
+				<item id="title"><![CDATA[Close the plugin prompt]]></item>
+				<item id="description"><![CDATA[]]></item>
+				<item id="variable"><![CDATA[closemsg]]></item>
+				<item id="type"><![CDATA[text]]></item>
+				<item id="value"><![CDATA[]]></item>
+				<item id="extra"><![CDATA[]]></item>
+			</item>
+			<item id="5">
+				<item id="displayorder"><![CDATA[2]]></item>
+				<item id="title"><![CDATA[Plugin Name]]></item>
+				<item id="description"><![CDATA[]]></item>
+				<item id="variable"><![CDATA[pluginname]]></item>
+				<item id="type"><![CDATA[text]]></item>
+				<item id="value"><![CDATA[EACPAY Payment]]></item>
+				<item id="extra"><![CDATA[]]></item>
+			</item>
+			<item id="6">
+				<item id="displayorder"><![CDATA[3]]></item>
+				<item id="title"><![CDATA[Earthcoin Blockchain Browser]]></item>
+				<item id="description"><![CDATA[Required field, used to top up is to check the payment status on the EAC blockchain, you can build your own or check the public browser https://blocks.deveac.com:4000，https://api.eacpay.com:9000]]></item>
+				<item id="variable"><![CDATA[eacpay_server]]></item>
+				<item id="type"><![CDATA[text]]></item>
+				<item id="value"><![CDATA[https://blocks.deveac.com:4000]]></item>
+				<item id="extra"><![CDATA[]]></item>
+			</item>
+			<item id="7">
+				<item id="displayorder"><![CDATA[4]]></item>
+				<item id="title"><![CDATA[Base currency]]></item>
+				<item id="description"><![CDATA[Required, the system automatically converts the corresponding amount into the number of eacs of the same value]]></item>
+				<item id="variable"><![CDATA[bizhong]]></item>
+				<item id="type"><![CDATA[select]]></item>
+				<item id="value"><![CDATA[RMB]]></item>
+				<item id="extra"><![CDATA[RMB=Chinese Yuan
+USD=US Dollar
+EUR=Euro]]></item>
+			</item>
+			<item id="8">
+				<item id="displayorder"><![CDATA[5]]></item>
+				<item id="title"><![CDATA[Recharge credit Type]]></item>
+				<item id="description"><![CDATA[]]></item>
+				<item id="variable"><![CDATA[moneytype]]></item>
+				<item id="type"><![CDATA[extcredit]]></item>
+				<item id="value"><![CDATA[5]]></item>
+				<item id="extra"><![CDATA[]]></item>
+			</item>
+			<item id="9">
+				<item id="displayorder"><![CDATA[6]]></item>
+				<item id="title"><![CDATA[Recharge ratio]]></item>
+				<item id="description"><![CDATA[Example: Fill in 1 means 1RMB = 1 credit, fill in 10 means 1RMB = 10 credit,Once determined, please do not change it, otherwise it will affect the whole recharge system]]></item>
+				<item id="variable"><![CDATA[moneybl]]></item>
+				<item id="type"><![CDATA[number]]></item>
+				<item id="value"><![CDATA[1]]></item>
+				<item id="extra"><![CDATA[]]></item>
+			</item>
+			<item id="10">
+				<item id="displayorder"><![CDATA[7]]></item>
+				<item id="title"><![CDATA[Receiving address]]></item>
+				<item id="description"><![CDATA[Required, please download the EAC wallet, generate an address, you can change the payment address at any time(when no one is using the site), multiple sites are strictly prohibited to share an address]]></item>
+				<item id="variable"><![CDATA[recive_token]]></item>
+				<item id="type"><![CDATA[text]]></item>
+				<item id="value"><![CDATA[eZcwRzRDPiPvM6WUGQXMRLa5MAHkrwWP9t]]></item>
+				<item id="extra"><![CDATA[]]></item>
+			</item>
+			<item id="11">
+				<item id="displayorder"><![CDATA[8]]></item>
+				<item id="title"><![CDATA[Link color]]></item>
+				<item id="description"><![CDATA[]]></item>
+				<item id="variable"><![CDATA[linkcolor]]></item>
+				<item id="type"><![CDATA[color]]></item>
+				<item id="value"><![CDATA[#FF0000]]></item>
+				<item id="extra"><![CDATA[]]></item>
+			</item>
+			<item id="12">
+				<item id="displayorder"><![CDATA[8]]></item>
+				<item id="title"><![CDATA[Confirm number]]></item>
+				<item id="description"><![CDATA[Must fill in, the larger the value, the longer the time to confirm the recharge, but the higher the security, a minimum of 3, it is recommended that no more than is 10]]></item>
+				<item id="variable"><![CDATA[receiptConfirmation]]></item>
+				<item id="type"><![CDATA[text]]></item>
+				<item id="value"><![CDATA[3]]></item>
+				<item id="extra"><![CDATA[]]></item>
+			</item>
+			<item id="13">
+				<item id="displayorder"><![CDATA[9]]></item>
+				<item id="title"><![CDATA[Link Location]]></item>
+				<item id="description"><![CDATA[]]></item>
+				<item id="variable"><![CDATA[linktype]]></item>
+				<item id="type"><![CDATA[select]]></item>
+				<item id="value"><![CDATA[2]]></item>
+				<item id="extra"><![CDATA[0=top navigation (left side, general)
+1=Top navigation (right side, general)
+2=left side of the integral (X2 or more)
+3=Main Navigation(X2.5 or more)]]></item>
+			</item>
+			<item id="14">
+				<item id="displayorder"><![CDATA[10]]></item>
+				<item id="title"><![CDATA[Minimum recharge amount]]></item>
+				<item id="description"><![CDATA[No less than1RMB]]></item>
+				<item id="variable"><![CDATA[moneymin]]></item>
+				<item id="type"><![CDATA[number]]></item>
+				<item id="value"><![CDATA[1]]></item>
+				<item id="extra"><![CDATA[]]></item>
+			</item>
+			<item id="15">
+				<item id="displayorder"><![CDATA[11]]></item>
+				<item id="title"><![CDATA[Tips]]></item>
+				<item id="description"><![CDATA[]]></item>
+				<item id="variable"><![CDATA[notice]]></item>
+				<item id="type"><![CDATA[textarea]]></item>
+				<item id="value"><![CDATA[Please do not modify any information on the payment page, otherwise the system will not recognize the order and will cause the recharge to fail.]]></item>
+				<item id="extra"><![CDATA[]]></item>
+			</item>
+		</item>
+		<item id="installfile"><![CDATA[install.php]]></item>
+		<item id="uninstallfile"><![CDATA[uninstall.php]]></item>
+	</item>
+</root>

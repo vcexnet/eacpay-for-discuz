@@ -1,0 +1,167 @@
+<link rel="stylesheet" href="https://unpkg.com/layui@2.6.8/dist/css/layui.css">
+<style>
+    .layui-form-label {
+        width: 50px;
+        padding: 9px 5px 9px 0;
+    }
+</style>
+<div class="layui-panel" style="margin: 10px 0;padding: 10px 0 0 0;">
+    <form action="{$_SERVER['REQUEST_URI']}" class="layui-form" method="POST">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">User ID</label>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <input type="text" name="uid" autocomplete="off" class="layui-input" value="{$_REQUEST['uid']}" />
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">User</label>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <input type="text" name="username" autocomplete="off" class="layui-input" value="{$_REQUEST['username']}" />
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">Order NO.</label>
+                <div class="layui-input-inline" style="width: 200px;">
+                    <input type="text" name="order_id" autocomplete="off" class="layui-input" value="{$_REQUEST['order_id']}" />
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">Status</label>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <select name="status">
+                        <option value="" <!--{if $_REQUEST['status']==''}-->selected<!--{/if}-->>All</option>
+                        <option value="reject" <!--{if $_REQUEST['status']=='reject'}-->selected<!--{/if}-->>Return</option>
+                        <option value="wait" <!--{if $_REQUEST['status']=='wait'}-->selected<!--{/if}-->>Wait</option>
+                        <option value="payed" <!--{if $_REQUEST['status']=='payed'}-->selected<!--{/if}-->>Paid</option>
+                        <option value="complete" <!--{if $_REQUEST['status']=='complete'}-->selected<!--{/if}-->>Completed</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <div class="layui-input-inline" style="width: 100px;">
+                    <button class="layui-btn" lay-submit lay-filter="formDemo">Query</button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+<table class="tb tb2 ">
+    <thead>
+        <tr>
+            <th colspan="15" class="partition">Info List</th>
+        </tr>
+        <tr class="header">
+            <th>Order NO./QR</th>
+            <th>Time</th>
+            <th>User</th>
+            <th>Amount</th>
+            <th>EAC</th>
+            <th>Address</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody id="list_body">
+        <!--{loop $datalist $key $value}-->
+        <tr>
+            <td>
+                <a href="javascript:;" data-href="/plugin.php?id=cc_cansnow_eacpay:eacpay_admin&action=qrcode&amount={$value['amount']}&orderid={$value['order_id']}&address={$value['address']}" class="orderid">
+                    <!--{$value['order_id']}-->
+                </a>
+            </td>
+            <td>
+                <!--{date($value['create_time'],'Y-m-d H:i:s')}-->
+            </td>
+            <td>
+                <!--{$value['username']}-->
+            </td>
+            <td>
+                <!--{$value['amount']}-->
+            </td>
+            <td>
+                <!--{$value['eac']}-->
+            </td>
+            <td>
+                <!--{$value['address']}-->
+            </td>
+            <td>
+                <!--{if $value['status'] == 'wait' }-->
+                <a href="javascript:;" class="statusSelect<!--{$value['status']}-->" data-status="<!--{$value['status']}-->" data-orderid="<!--{$value['order_id']}-->">
+                    Awaiting processing
+                </a>
+                <!--{elseif $value['status'] == 'reject' }-->
+                Return
+                <!--{else}-->
+                Completed
+                <!--{/if}-->
+            </td>
+        </tr>
+        <!--{/loop}-->
+    </tbody>
+</table>
+<div id="pagenation"></div>
+<script id="optinTpl" type="text/html">
+    <label><input type="radio" name="statusSelect" value="reject" {{#  if(d.status == 'reject'){ }}checked{{#  } }}>Reject</label>
+    <label><input type="radio" name="statusSelect" value="wait" {{#  if(d.status == 'wait'){ }}checked{{#  } }}>Waiting payment</label>
+    <label><input type="radio" name="statusSelect" value="complete" {{#  if(d.status == 'complete'){ }}checked{{#  } }} >Completed</label>
+</script>
+<script src="https://unpkg.com/layui@2.6.8/dist/layui.js"></script>
+<script>
+    var $ = layui.jquery;
+    $('.statusSelectwait').on('click', function() {
+        var that = $(this);
+        var s = $(this).data('status');
+        var order_id = $(this).data('orderid');
+        layui.layer.open({
+            title: 'Change order status',
+            content: layui.laytpl($('#optinTpl').html()).render({
+                status: s
+            }),
+            yes: function(index, layero) {
+                var checked = layero.find('input[name=statusSelect]:checked').val();
+                $.post('plugin.php?id=cc_cansnow_eacpay:eacpay_admin&action=changestatus',{
+                    status: checked,
+                    order_id: order_id,
+                },
+                function(d) {
+                    if (d == 'ok') {
+                        that.data('status', checked);
+                        layui.layer.msg("Operation success", {
+                            icon: 1,
+                            time: 2000
+                        },function(){
+                            window.location.reload();
+                        });
+                    } else {
+
+                    }
+                });
+            }
+        });
+    });
+    $('.orderid').on('mouseenter', function() {
+        layui.layer.tips('<img src="' + $(this).data('href') + '" />', this);
+    });
+
+    layui.laypage.render({
+        elem: 'pagenation',
+        count: '{$totalCount}',
+        limit: '{$pagesize}',
+        curr: '{$page}',
+        jump: function(obj, first) {
+            //obj Contains all parameters of the current paging, e.g.
+            console.log(obj.curr); //Get the current page in order to request the data of the corresponding page from the server.
+            console.log(obj.limit); //Get the number of items displayed per page
+
+            //No first time execution
+            if (!first) {
+                var url = window.location.href;
+                url = url.replace(/&page=\d+/, '');
+                url += "&page=" + obj.curr;
+                window.location.href = url;
+            }
+        }
+    });
+</script>
