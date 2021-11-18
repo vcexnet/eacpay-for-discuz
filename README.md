@@ -33,10 +33,10 @@ eacpay for discuz，eacpay针对discuz的支付插件。基于earthcoin区块链
 1.  用户点击”eacpay区块链支付“输入需要充值的金额，不接受小数，充值金额不受限制，点击”提交“
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/1024/164600_321640e9_5105092.png "1.png")
 2.  打开eacpay手机端，扫描出现的支付二维码进行支付，支付完成后，等待系统到Earthcoin区块链网络确认支付，需要1-5分钟左右
-![输入图片说明](https://images.gitee.com/uploads/images/2021/1024/164615_ae9b33cc_5105092.png "2.png")
+![输入图片说明](https://images.gitee.com/uploads/images/2021/1118/210312_0f6bf6da_5105092.png "截屏2021-11-18 20.53.28.png")
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/1024/164652_47afc0a4_5105092.jpeg "3.jpeg")
 3.  等待系统确认支付情况，最终完成支付
-![输入图片说明](https://images.gitee.com/uploads/images/2021/1024/164636_3de54cbc_5105092.png "5.png")
+![输入图片说明](https://images.gitee.com/uploads/images/2021/1118/210350_c90b5309_5105092.png "截屏2021-11-18 20.58.33.png")
 4.  点击”eacpay区块链支付“中的提现，输入需要提现的金额，点击”申请提现“
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/1024/165015_d1188dd2_5105092.png "6.png")
 5.  站长或者管理员登录论坛后台，在”应用“--->”插件“里面的提现订单。点击订单号，使用eacpay扫描弹出的二维码，点击发送。完成提现支付，点击状态，将其更改为：完成即可。
