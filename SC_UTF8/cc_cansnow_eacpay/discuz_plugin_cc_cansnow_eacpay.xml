@@ -155,7 +155,7 @@
 			<item id="6">
 				<item id="displayorder"><![CDATA[3]]></item>
 				<item id="title"><![CDATA[Earthcoin区块链浏览器]]></item>
-				<item id="description"><![CDATA[必填，用于充值是到EAC区块链上查询支付情况，可以自行搭建或者查询公共浏览器https://blocks.deveac.com:4040，https://api.eacpay.com:9000]]></item>
+				<item id="description"><![CDATA[必填，用于充值是到EAC区块链上查询支付情况，可以自行搭建或者查询公共浏览器https://blocks.deveac.com:4000，https://api.eacpay.com:9000，http://82.156.37.106:9000，http://106.52.249.182:9000]]></item>
 				<item id="variable"><![CDATA[eacpay_server]]></item>
 				<item id="type"><![CDATA[text]]></item>
 				<item id="value"><![CDATA[https://blocks.deveac.com:4000]]></item>
