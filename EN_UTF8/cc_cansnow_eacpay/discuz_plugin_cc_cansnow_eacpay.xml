@@ -155,7 +155,7 @@
 			<item id="6">
 				<item id="displayorder"><![CDATA[3]]></item>
 				<item id="title"><![CDATA[Earthcoin Blockchain Browser]]></item>
-				<item id="description"><![CDATA[Required field, used to top up is to check the payment status on the EAC blockchain, you can build your own or check the public browser https://blocks.deveac.com:4000，https://api.eacpay.com:9000]]></item>
+				<item id="description"><![CDATA[Required field, used to top up is to check the payment status on the EAC blockchain, you can build your own or check the public browser https://blocks.deveac.com:4000，https://api.eacpay.com:9000，http://82.156.37.106:9000，http://106.52.249.182:9000]]></item>
 				<item id="variable"><![CDATA[eacpay_server]]></item>
 				<item id="type"><![CDATA[text]]></item>
 				<item id="value"><![CDATA[https://blocks.deveac.com:4000]]></item>
